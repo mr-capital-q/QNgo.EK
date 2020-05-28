@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using QNgo.EK.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,6 +24,19 @@ namespace QNgo.EK.Engine
             _logger = logger;
         }
 
+        public Task StartGameAsync()
+        {
+            for (var i = 0; i < 1; i++)
+            {
+                foreach (var player in _gameState.Players)
+                {
+                    player.Cards.Add(_gameState.DrawCard());
+                }
+            }
+
+            return ExecuteTurnPhaseAsync();
+        }
+
         public async Task ExecuteTurnPhaseAsync()
         {
             _logger?.LogInformation($"Executing {_gameState.CurrentPhase} turn phase.");
@@ -46,7 +58,7 @@ namespace QNgo.EK.Engine
                     _gameState.CurrentPhase = TurnPhase.TurnEnd;
                     break;
                 case TurnPhase.TurnEnd:
-                    // Go to next player
+                    _gameState.GoToNextPlayer();
                     _gameState.CurrentPhase = TurnPhase.TurnStart;
                     break;
                 default:

@@ -21,7 +21,7 @@ namespace QNgo.EK.Engine.GameActions.CardActions
             if (playedCard.Family != RequiredCardFamily)
                 throw new InvalidOperationException($"Action requires a cost of one card from family {RequiredCardFamily}.");
 
-            gameState.DiscardCard(playedCard.CardId);
+            gameState.DiscardCard(playedCard);
 
             return ExecuteActionCoreAsync(gameState);
         }

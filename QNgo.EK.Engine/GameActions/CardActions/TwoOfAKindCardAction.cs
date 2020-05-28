@@ -28,7 +28,7 @@ namespace QNgo.EK.Engine.GameActions.CardActions
             Logger?.LogInformation("Discarding cards.");
             foreach (var card in actionCost.Cards)
             {
-                gameState.DiscardCard(card.CardId);
+                gameState.DiscardCard(card);
             }
         }
 

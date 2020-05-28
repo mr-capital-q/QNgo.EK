@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace QNgo.EK.Abstractions
 {
@@ -10,10 +8,11 @@ namespace QNgo.EK.Abstractions
         IList<ICard> Deck { get; }
         IList<ICard> DiscardPile { get; }
         TurnPhase CurrentPhase { get; set; }
-        IPlayer CurrentPlayer { get; set; }
+        IPlayer CurrentPlayer { get; }
         ICard DrawCard();
         void ShuffleDeck();
-        void DiscardCard(int id);
+        void DiscardCard(ICard card);
+        void GoToNextPlayer();
     }
 
     public interface IActionCost

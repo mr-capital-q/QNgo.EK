@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QNgo.EK.Engine", "QNgo.EK.Engine\QNgo.EK.Engine.csproj", "{7AB4EEDD-C7D1-441A-9BAC-36BC27C502EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNgo.EK.Engine", "QNgo.EK.Engine\QNgo.EK.Engine.csproj", "{7AB4EEDD-C7D1-441A-9BAC-36BC27C502EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QNgo.EK.Abstractions", "QNgo.EK.Abstractions\QNgo.EK.Abstractions.csproj", "{AEA97687-984B-4D8A-B797-D28A6C09E2F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNgo.EK.Abstractions", "QNgo.EK.Abstractions\QNgo.EK.Abstractions.csproj", "{AEA97687-984B-4D8A-B797-D28A6C09E2F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QNgo.EK.App", "QNgo.EK.App\QNgo.EK.App.csproj", "{463F4A75-9BE7-42CD-9DA1-26E72E81A393}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AEA97687-984B-4D8A-B797-D28A6C09E2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEA97687-984B-4D8A-B797-D28A6C09E2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEA97687-984B-4D8A-B797-D28A6C09E2F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{463F4A75-9BE7-42CD-9DA1-26E72E81A393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{463F4A75-9BE7-42CD-9DA1-26E72E81A393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{463F4A75-9BE7-42CD-9DA1-26E72E81A393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{463F4A75-9BE7-42CD-9DA1-26E72E81A393}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

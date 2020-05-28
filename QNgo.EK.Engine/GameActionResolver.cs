@@ -3,12 +3,10 @@ using QNgo.EK.Abstractions;
 using QNgo.EK.Engine.GameActions.CardActions;
 using QNgo.EK.Engine.GameActions.PlayerActions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace QNgo.EK.Engine.GameActions
+namespace QNgo.EK.Engine
 {
     public class GameActionResolver : IGameActionResolver
     {

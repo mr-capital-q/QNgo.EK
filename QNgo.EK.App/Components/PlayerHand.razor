@@ -1,0 +1,26 @@
+﻿<div class="d-flex m-4 align-items-end">
+    @foreach (var card in Cards)
+    {
+        <Actionable IsExpanded="card.CardId == _focusedCardId">
+            <Content>
+                <Card Model="card" Click="() => UpdateFocusedCard(card.CardId)" />
+            </Content>
+            <Actions>
+                <button class="btn btn-primary m-1">Play</button>
+            </Actions>
+        </Actionable>
+    }
+</div>
+
+@code {
+    private int _focusedCardId = -1;
+
+    [Parameter]
+    public ICollection<QNgo.EK.Abstractions.ICard> Cards { get; set; } = new List<QNgo.EK.Abstractions.ICard>();
+
+    private void UpdateFocusedCard(int cardId)
+    {
+        _focusedCardId = _focusedCardId == cardId ? -1 : cardId;
+        StateHasChanged();
+    }
+}

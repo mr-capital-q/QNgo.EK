@@ -1,0 +1,25 @@
+﻿@page "/"
+
+@inject QNgo.EK.Engine.TurnEngine _engine;
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+<PlayerHand Cards="_cards" />
+
+
+<button @onclick="Go">Go</button>
+
+@code {
+    private List<QNgo.EK.Abstractions.ICard> _cards = new List<Abstractions.ICard>
+{
+        new QNgo.EK.Engine.Card(1, QNgo.EK.Abstractions.CardFamily.Skip, "Skip", "End your turn without drawing a card."),
+        new QNgo.EK.Engine.Card(5, QNgo.EK.Abstractions.CardFamily.Filler1, "Taco Cat", "Does nothing."),
+        new QNgo.EK.Engine.Card(6, QNgo.EK.Abstractions.CardFamily.Filler1, "Taco Cat", "Does nothing.")
+    };
+
+    private async void Go()
+    {
+        await _engine.StartGameAsync();
+    }
+}
