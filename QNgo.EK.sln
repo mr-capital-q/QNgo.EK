@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNgo.EK.Engine", "QNgo.EK.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNgo.EK.Abstractions", "QNgo.EK.Abstractions\QNgo.EK.Abstractions.csproj", "{AEA97687-984B-4D8A-B797-D28A6C09E2F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QNgo.EK.App", "QNgo.EK.App\QNgo.EK.App.csproj", "{463F4A75-9BE7-42CD-9DA1-26E72E81A393}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNgo.EK.App", "QNgo.EK.App\QNgo.EK.App.csproj", "{463F4A75-9BE7-42CD-9DA1-26E72E81A393}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

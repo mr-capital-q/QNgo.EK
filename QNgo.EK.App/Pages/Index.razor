@@ -8,16 +8,10 @@ Welcome to your new app.
 <PlayingHand Cards="_cards" />
 <PlayingCard Model="_cards.First()" IsFlipped="_isFlipped">
     <FrontFace>
-        <div class="card-face d-flex justify-content-between flex-column">
-            <span class="card-title">@context.Name</span>
-            <img class="card-image" src="http://petslady.com/sites/default/files/inline-images/taco%201_0.jpg" alt="Card image">
-            <span class="card-description text-muted">@context.Description</span>
-        </div>
+        <FrontCardFace Model="_cards.First()" />
     </FrontFace>
     <BackFace>
-        <div class="card-face">
-            <h6 class="card-title">This is the back</h6>
-        </div>
+        <BackCardFace />
     </BackFace>
 </PlayingCard>
 

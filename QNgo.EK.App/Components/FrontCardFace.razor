@@ -1,0 +1,10 @@
+﻿<div class="card-face d-flex justify-content-between flex-column">
+    <span class="card-title">@Model.Name</span>
+    <img class="card-image" src="http://petslady.com/sites/default/files/inline-images/taco%201_0.jpg" alt="Card image">
+    <span class="card-description text-muted">@Model.Description</span>
+</div>
+
+@code {
+    [Parameter]
+    public QNgo.EK.Abstractions.ICard Model { get; set; }
+}

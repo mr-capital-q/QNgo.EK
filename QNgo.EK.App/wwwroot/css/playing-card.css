@@ -67,9 +67,9 @@
 /* Card face */
 .card-face {
     border: 12px solid gray;
-    padding: 12px;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 
     .card-face .card-title {
@@ -81,9 +81,12 @@
         font-size: 18px;
     }
 
+.front-content .card-face {
+    padding: 12px;
+}
+
 .card-sm .card-face {
     border: 6px solid gray;
-    padding: 6px;
 }
 
     .card-sm .card-face .card-title {
@@ -93,6 +96,10 @@
     .card-sm .card-face .card-description {
         font-size: 9px;
     }
+
+.card-sm .front-content .card-face {
+    padding: 6px;
+}
 
 .card-face img.card-image {
     width: 100%;

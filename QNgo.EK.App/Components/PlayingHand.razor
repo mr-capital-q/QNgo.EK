@@ -4,16 +4,10 @@
         {
             <PlayingCard @ref="CardRef" Model="card" Click="() => UpdateFocusedCard(card.CardId)" class="card-sm hover">
                 <FrontFace>
-                    <div class="card-face d-flex justify-content-between flex-column">
-                        <span class="card-title">@context.Name</span>
-                        <img class="card-image" src="http://petslady.com/sites/default/files/inline-images/taco%201_0.jpg" alt="Card image">
-                        <span class="card-description text-muted">@context.Description</span>
-                    </div>
+                    <FrontCardFace Model="card" />
                 </FrontFace>
                 <BackFace>
-                    <div class="card-face">
-                        <h6 class="card-title">This is the back</h6>
-                    </div>
+                    <BackCardFace />
                 </BackFace>
             </PlayingCard>
         }
@@ -22,12 +16,12 @@
 
 @code {
     private int _focusedCardId = -1;
-    private List<PlayingCard<QNgo.EK.Abstractions.ICard>> _cardRefs = new List<PlayingCard<QNgo.EK.Abstractions.ICard>>();
+    private List<PlayingCard> _cardRefs = new List<PlayingCard>();
 
     [Parameter]
     public ICollection<QNgo.EK.Abstractions.ICard> Cards { get; set; } = new List<QNgo.EK.Abstractions.ICard>();
 
-    private PlayingCard<QNgo.EK.Abstractions.ICard> CardRef
+    private PlayingCard CardRef
     {
         set { _cardRefs.Add(value); }
     }
@@ -36,14 +30,5 @@
     {
         _focusedCardId = _focusedCardId == cardId ? -1 : cardId;
         StateHasChanged();
-    }
-
-    private void FlipCard(int cardId)
-    {
-        var cardRef = _cardRefs.FirstOrDefault(r => r.Model?.CardId == cardId);
-        if (cardRef is null)
-            return;
-
-        cardRef.Flip();
     }
 }
