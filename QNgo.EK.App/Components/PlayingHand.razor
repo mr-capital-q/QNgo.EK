@@ -1,34 +1,16 @@
-﻿<div style="overflow-x: auto; overflow-y: hidden; padding: 80px 20px; margin: -80px -20px;">
-    <div class="d-flex m-4 align-items-end">
-        @foreach (var card in Cards)
-        {
-            <PlayingCard @ref="CardRef" Model="card" Click="() => UpdateFocusedCard(card.CardId)" class="card-sm hover">
-                <FrontFace>
-                    <FrontCardFace Model="card" />
-                </FrontFace>
-                <BackFace>
-                    <BackCardFace />
-                </BackFace>
-            </PlayingCard>
-        }
-    </div>
+﻿@typeparam T
+
+<div class="playing-hand d-flex align-items-end">
+    @foreach (var card in Cards)
+    {
+        @CardTemplate(card)
+    }
 </div>
 
 @code {
-    private int _focusedCardId = -1;
-    private List<PlayingCard> _cardRefs = new List<PlayingCard>();
+    [Parameter]
+    public ICollection<T> Cards { get; set; } = new List<T>();
 
     [Parameter]
-    public ICollection<QNgo.EK.Abstractions.ICard> Cards { get; set; } = new List<QNgo.EK.Abstractions.ICard>();
-
-    private PlayingCard CardRef
-    {
-        set { _cardRefs.Add(value); }
-    }
-
-    private void UpdateFocusedCard(int cardId)
-    {
-        _focusedCardId = _focusedCardId == cardId ? -1 : cardId;
-        StateHasChanged();
-    }
+    public RenderFragment<T> CardTemplate { get; set; }
 }

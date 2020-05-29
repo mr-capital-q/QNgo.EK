@@ -78,7 +78,8 @@
     }
 
     .card-face .card-description {
-        font-size: 18px;
+        font-size: 14px;
+        line-height: 14px;
     }
 
 .front-content .card-face {
@@ -94,7 +95,8 @@
     }
 
     .card-sm .card-face .card-description {
-        font-size: 9px;
+        font-size: 7px;
+        line-height: 7px;
     }
 
 .card-sm .front-content .card-face {

@@ -1,0 +1,6 @@
+﻿.playing-hand {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 16px 8px 24px 8px;
+    margin: -16px 0 0 0;
+}

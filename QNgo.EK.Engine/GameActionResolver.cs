@@ -43,9 +43,9 @@ namespace QNgo.EK.Engine
         {
             switch (family)
             {
-                case CardFamily.Bomb:
+                case CardFamily.Lose:
                     throw new NotImplementedException();
-                case CardFamily.Defuse:
+                case CardFamily.ExtraLife:
                     throw new NotImplementedException();
                 case CardFamily.Nope:
                     throw new NotImplementedException();
@@ -59,7 +59,7 @@ namespace QNgo.EK.Engine
                     throw new NotImplementedException();
                 case CardFamily.PeekDeck:
                     return ActivatorUtilities.CreateInstance<PeekDeckCardAction>(_services, 3);
-                case CardFamily.ImplodingBomb:
+                case CardFamily.LoseExtra:
                     throw new NotImplementedException();
                 case CardFamily.TargetedAttack:
                     throw new NotImplementedException();

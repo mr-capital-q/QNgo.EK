@@ -16,8 +16,8 @@
 
     public enum CardFamily
     {
-        Bomb,
-        Defuse,
+        Lose,
+        ExtraLife,
         Nope,
         Skip,
         Attack,
@@ -29,12 +29,20 @@
         Filler3,
         Filler4,
         Filler5,
-        ImplodingBomb,
+        LoseExtra,
         TargetedAttack,
         AlterDeck,
         DrawBottom,
         Reverse,
-        Filler6
-
+        FillerWildcard,
+        Destruction,
+        HideEnd,
+        SkipAll,
+        Return,
+        PeekDeckExtra,
+        LockCard,
+        SwapTopBottom,
+        AlterDeckExtra,
+        Blind
     }
 }
