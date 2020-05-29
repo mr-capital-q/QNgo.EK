@@ -1,48 +1,99 @@
 ﻿.card {
-    width: 160px;
-    height: 240px;
-    border-radius: 5px;
-    margin: 5px;
+    width: 252px;
+    height: 360px;
+    min-width: 252px;
+    min-height: 360px;
+    margin: 4px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transform-style: preserve-3d;
     position: relative;
+    transform-style: preserve-3d;
     transition: 0.3s;
     /* Cubic ease out easing */
     transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
+    .card.card-sm {
+        width: 126px;
+        height: 180px;
+        min-width: 126px;
+        min-height: 180px;
+    }
+
     .card.flipped {
         transform: rotateY(180deg);
     }
 
-    .card:hover, .card:hover.flipped {
+    .card.hover:hover, .card.hover:hover.flipped {
         box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
     }
 
-    .card:hover {
+    .card.hover:hover {
         transform: scale(1.1);
     }
 
-        .card:hover.flipped {
+        .card.hover:hover.flipped {
             transform: scale(1.1) rotateY(180deg);
         }
 
-    .card > .front-content, .card > .back-content {
-        border-radius: 5px;
-        height: 100%;
-        width: 100%;
-        backface-visibility: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
-        overflow: hidden;
+    .card, .card > .front-content, .card > .back-content {
+        border-radius: 8px;
     }
 
-    .card > .front-content {
-        z-index: 1;
-        transform: rotateY(0deg);
+        .card.card-sm, .card.card-sm > .front-content, .card.card-sm > .back-content {
+            border-radius: 4px;
+        }
+
+        .card > .front-content, .card > .back-content {
+            border-radius: 8px;
+            height: 100%;
+            width: 100%;
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        .card > .front-content {
+            transform: rotateY(0deg);
+        }
+
+        .card > .back-content {
+            z-index: -1;
+            transform: rotateY(180deg);
+        }
+
+
+/* Card face */
+.card-face {
+    border: 12px solid gray;
+    padding: 12px;
+    height: 100%;
+    width: 100%;
+}
+
+    .card-face .card-title {
+        font-size: 24px;
+        font-weight: 600;
     }
 
-    .card > .back-content {
-        transform: rotateY(180deg);
+    .card-face .card-description {
+        font-size: 18px;
     }
+
+.card-sm .card-face {
+    border: 6px solid gray;
+    padding: 6px;
+}
+
+    .card-sm .card-face .card-title {
+        font-size: 12px;
+    }
+
+    .card-sm .card-face .card-description {
+        font-size: 9px;
+    }
+
+.card-face img.card-image {
+    width: 100%;
+}

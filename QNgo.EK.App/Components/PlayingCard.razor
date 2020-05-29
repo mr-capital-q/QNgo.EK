@@ -1,6 +1,6 @@
 ﻿@typeparam T
 
-<div class="card @(IsFlipped ? "flipped" : string.Empty)" @onclick="Click">
+<div class="@CssClass" @onclick="Click">
     <div class="front-content">
         @if (!_isFrontObfuscated)
         {
@@ -34,9 +34,28 @@
     [Parameter]
     public Action Click { get; set; }
 
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object> AdditionalAttributes { get; set; }
+
+    protected string CssClass
+    {
+        get
+        {
+            var coreClasses = $"card{(IsFlipped ? " flipped" : string.Empty)}";
+
+            if (AdditionalAttributes != null &&
+                AdditionalAttributes.TryGetValue("class", out var @class) &&
+                !string.IsNullOrEmpty(Convert.ToString(@class)))
+                return $"{@class} {coreClasses}";
+
+            return coreClasses;
+        }
+    }
+
     public async void Flip()
     {
         IsFlipped = !IsFlipped;
+        StateHasChanged();
 
         if (!IsFlipped)
         {
@@ -44,7 +63,7 @@
             return;
         }
 
-        await Task.Delay(300);// 0.3s to match css flip animation
+        await Task.Delay(300); // 0.3s to match css flip animation
         _isFrontObfuscated = true;
         StateHasChanged();
     }

@@ -6,6 +6,7 @@ app {
     position: relative;
     display: flex;
     flex-direction: column;
+    perspective: 2000px;
 }
 
 .top-row {
@@ -123,21 +124,6 @@ app {
         right: 0.75rem;
         top: 0.5rem;
     }
-
-.card-face {
-    border: 5px solid gray;
-    padding: 16px;
-    height: 100%;
-    width: 100%;
-}
-
-.card-title {
-    margin: 0px;
-}
-
-img.card-image {
-    width: 100%;
-}
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
