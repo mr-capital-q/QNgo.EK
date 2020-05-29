@@ -1,0 +1,57 @@
+﻿<div style="overflow-x: auto; overflow-y: hidden; padding: 80px 20px; margin: -80px -20px;">
+    <div class="d-flex m-4 align-items-end">
+        @foreach (var card in Cards)
+        {
+            <PlayingHandActionable IsExpanded="card.CardId == _focusedCardId">
+                <Content>
+                    <PlayingCard @ref="CardRef" Model="card" Click="() => UpdateFocusedCard(card.CardId)">
+                        <FrontFace>
+                            <div class="card-face d-flex justify-content-between flex-column">
+                                <h6 class="card-title">@context.Name</h6>
+                                <img class="card-image" src="http://petslady.com/sites/default/files/inline-images/taco%201_0.jpg" alt="Card image">
+                                <small class="text-muted">@context.Description</small>
+                            </div>
+                        </FrontFace>
+                        <BackFace>
+                            <div class="card-face">
+                                <h6 class="card-title">This is the back</h6>
+                            </div>
+                        </BackFace>
+                    </PlayingCard>
+                </Content>
+                <Actions>
+                    <button class="btn btn-primary m-1">Play</button>
+                    <button class="btn btn-primary m-1" @onclick="() => FlipCard(card.CardId)">Flip</button>
+                </Actions>
+            </PlayingHandActionable>
+        }
+    </div>
+</div>
+
+@code {
+    private int _focusedCardId = -1;
+    private List<PlayingCard<QNgo.EK.Abstractions.ICard>> _cardRefs = new List<PlayingCard<QNgo.EK.Abstractions.ICard>>();
+
+    [Parameter]
+    public ICollection<QNgo.EK.Abstractions.ICard> Cards { get; set; } = new List<QNgo.EK.Abstractions.ICard>();
+
+    private PlayingCard<QNgo.EK.Abstractions.ICard> CardRef
+    {
+        set { _cardRefs.Add(value); }
+    }
+
+    private void UpdateFocusedCard(int cardId)
+    {
+        _focusedCardId = _focusedCardId == cardId ? -1 : cardId;
+        StateHasChanged();
+    }
+
+    private void FlipCard(int cardId)
+    {
+        var cardRef = _cardRefs.FirstOrDefault(r => r.Model?.CardId == cardId);
+        if (cardRef is null)
+            return;
+
+        cardRef.Flip();
+    }
+}

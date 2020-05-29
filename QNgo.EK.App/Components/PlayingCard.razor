@@ -1,0 +1,51 @@
+﻿@typeparam T
+
+<div class="card @(IsFlipped ? "flipped" : string.Empty)" @onclick="Click">
+    <div class="front-content">
+        @if (!_isFrontObfuscated)
+        {
+            @FrontFace(Model)
+        }
+        else
+        {
+            <p class="text-center my-2">No cheating!</p>
+        }
+    </div>
+    <div class="back-content">
+        @BackFace(Model)
+    </div>
+</div>
+
+@code {
+    private bool _isFrontObfuscated;
+
+    [Parameter]
+    public T Model { get; set; }
+
+    [Parameter]
+    public RenderFragment<T> FrontFace { get; set; }
+
+    [Parameter]
+    public RenderFragment<T> BackFace { get; set; }
+
+    [Parameter]
+    public bool IsFlipped { get; set; }
+
+    [Parameter]
+    public Action Click { get; set; }
+
+    public async void Flip()
+    {
+        IsFlipped = !IsFlipped;
+
+        if (!IsFlipped)
+        {
+            _isFrontObfuscated = false;
+            return;
+        }
+
+        await Task.Delay(300);// 0.3s to match css flip animation
+        _isFrontObfuscated = true;
+        StateHasChanged();
+    }
+}

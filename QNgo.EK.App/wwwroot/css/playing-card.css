@@ -1,0 +1,48 @@
+﻿.card {
+    width: 160px;
+    height: 240px;
+    border-radius: 5px;
+    margin: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transform-style: preserve-3d;
+    position: relative;
+    transition: 0.3s;
+    /* Cubic ease out easing */
+    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+    .card.flipped {
+        transform: rotateY(180deg);
+    }
+
+    .card:hover, .card:hover.flipped {
+        box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .card:hover {
+        transform: scale(1.1);
+    }
+
+        .card:hover.flipped {
+            transform: scale(1.1) rotateY(180deg);
+        }
+
+    .card > .front-content, .card > .back-content {
+        border-radius: 5px;
+        height: 100%;
+        width: 100%;
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+    }
+
+    .card > .front-content {
+        z-index: 1;
+        transform: rotateY(0deg);
+    }
+
+    .card > .back-content {
+        transform: rotateY(180deg);
+    }
