@@ -4,8 +4,9 @@
     {
         TurnStart,
         PlayerAction,
-        Draw,
-        TurnEnd
+        TurnEnd,
+        Elimination,
+        GameEnd
     }
 
     public enum PlayerActionType

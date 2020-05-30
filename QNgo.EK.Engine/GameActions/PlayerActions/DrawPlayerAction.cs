@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using QNgo.EK.Abstractions;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QNgo.EK.Engine.GameActions.PlayerActions
@@ -13,10 +14,16 @@ namespace QNgo.EK.Engine.GameActions.PlayerActions
             _logger = logger;
         }
 
-        public Task ExecuteActionAsync(IGameState gameState, IActionCost actionCost = null)
+        public Task ExecuteActionAsync(int playerId, IGameState gameState, IActionCost actionCost = null)
         {
-            _logger?.LogInformation("Moving to draw phase.");
-            gameState.CurrentPhase = TurnPhase.Draw;
+            _logger?.LogInformation("Drawing a card...");
+            var newCard = gameState.DrawCard();
+            gameState.Players.Single(p => p.PlayerId == playerId).Cards.Add(newCard);
+
+            if (newCard.Family == CardFamily.Lose)
+                gameState.CurrentPhase = TurnPhase.Elimination;
+            else
+                gameState.CurrentPhase = TurnPhase.TurnEnd;
             return Task.CompletedTask;
         }
     }

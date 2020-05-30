@@ -20,10 +20,5 @@ namespace QNgo.EK.Engine
         public string Name { get; }
 
         public string Description { get; }
-
-        public Task ExecuteActionAsync(IGameState gameState, IActionCost actionCost = null)
-        {
-            return Task.CompletedTask;
-        }
     }
 }

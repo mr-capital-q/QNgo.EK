@@ -12,6 +12,7 @@ namespace QNgo.EK.Abstractions
         ICard DrawCard();
         void ShuffleDeck();
         void DiscardCard(ICard card);
+        void ReturnToDeck(ICard card, int position = 0);
         void GoToNextPlayer();
     }
 

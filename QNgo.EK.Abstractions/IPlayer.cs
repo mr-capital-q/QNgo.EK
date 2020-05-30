@@ -36,5 +36,6 @@ namespace QNgo.EK.Abstractions
     public interface IPlayer : IPlayerHand, IGetPlayerAction, IGetPlayerQuickAction, IPlayerCardDisplay, IPlayerCardPicker, IPlayerTargetPlayer
     {
         int PlayerId { get; }
+        bool IsEliminated { get; set; }
     }
 }

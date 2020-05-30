@@ -18,6 +18,7 @@ namespace QNgo.EK.Engine
         public int PlayerId { get; }
 
         public ICollection<ICard> Cards { get; }
+        public bool IsEliminated { get; set; }
 
         public Task<int> ChoosePlayerAsync()
         {
@@ -27,8 +28,8 @@ namespace QNgo.EK.Engine
         public async Task<IPlayerAction> GetPlayerActionAsync()
         {
             await Task.Delay(500);
-            if (Cards.Any())
-                return PlayerAction.PlayCard(PlayerId, Cards.First().CardId);
+            //if (Cards.Any())
+            //    return PlayerAction.PlayCard(PlayerId, Cards.First().CardId);
             return PlayerAction.Draw(PlayerId);
         }
 

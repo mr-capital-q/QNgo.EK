@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using QNgo.EK.Abstractions;
+using QNgo.EK.Engine.PlayerActions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,9 +26,9 @@ namespace QNgo.EK.Engine
             _logger = logger;
         }
 
-        public Task StartGameAsync()
+        public async Task StartGameAsync()
         {
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 7; i++)
             {
                 foreach (var player in _gameState.Players)
                 {
@@ -34,7 +36,17 @@ namespace QNgo.EK.Engine
                 }
             }
 
-            return ExecuteTurnPhaseAsync();
+            var id = 1;
+            foreach (var player in _gameState.Players)
+            {
+                if (id != 1)
+                    _gameState.ReturnToDeck(await _cardResolver.GetCardAsync(id));
+                player.Cards.Add(await _cardResolver.GetCardAsync(id + 7));
+                id++;
+            }
+            _gameState.ShuffleDeck();
+
+            await ExecuteTurnPhaseAsync();
         }
 
         public async Task ExecuteTurnPhaseAsync()
@@ -49,20 +61,44 @@ namespace QNgo.EK.Engine
                     var playerAction = await _gameState.CurrentPlayer.GetPlayerActionAsync();
                     var gameAction = await _gameActionResolver.GetGameActionAsync(playerAction);
                     var playedCards = await Task.WhenAll(playerAction.CardIds.Select(id => _cardResolver.GetCardAsync(id)));
-                    await gameAction.ExecuteActionAsync(_gameState, new ActionCost(playedCards));
-                    break;
-                case TurnPhase.Draw:
-                    var newCard = _gameState.DrawCard();
-                    // Check for exploding kitten and perform defuse if necessary
-                    _gameState.CurrentPlayer.Cards.Add(newCard);
-                    _gameState.CurrentPhase = TurnPhase.TurnEnd;
+                    await gameAction.ExecuteActionAsync(_gameState.CurrentPlayer.PlayerId, _gameState, new ActionCost(playedCards));
                     break;
                 case TurnPhase.TurnEnd:
                     _gameState.GoToNextPlayer();
                     _gameState.CurrentPhase = TurnPhase.TurnStart;
                     break;
-                default:
+                case TurnPhase.Elimination:
+                    var loseCard = _gameState.CurrentPlayer.Cards.LastOrDefault(c => c.Family == CardFamily.Lose);
+                    if (loseCard is null)
+                    {
+                        _gameState.CurrentPhase = TurnPhase.TurnEnd;
+                        break;
+                    }
+
+                    var extraLifeCard = _gameState.CurrentPlayer.Cards.FirstOrDefault(c => c.Family == CardFamily.ExtraLife);
+                    if (extraLifeCard is null)
+                    {
+                        _gameState.CurrentPlayer.IsEliminated = true;
+                        _logger.LogWarning($"{_gameState.CurrentPlayer.PlayerId} has been elimited!!!");
+                        _logger.LogInformation($"{_gameState.Players.Count(c => !c.IsEliminated)} players remain.");
+                    }
+                    else
+                    {
+                        var action = await _gameActionResolver.GetGameActionAsync(PlayerAction.PlayCard(_gameState.CurrentPlayer.PlayerId, extraLifeCard.CardId));
+                        await action.ExecuteActionAsync(_gameState.CurrentPlayer.PlayerId, _gameState, new ActionCost(new List<ICard> { extraLifeCard, loseCard }));
+                    }
+
+                    if (_gameState.Players.Count(c => !c.IsEliminated) == 1)
+                    {
+                        _gameState.CurrentPhase = TurnPhase.GameEnd;
+                        break;
+                    }
+
+                    _gameState.CurrentPhase = TurnPhase.TurnEnd;
                     break;
+                default:
+                    _logger.LogInformation($"Game has ended. {_gameState.Players.Single(c => !c.IsEliminated).PlayerId} is the winner.");
+                    return;
             }
 
             await ExecuteTurnPhaseAsync();

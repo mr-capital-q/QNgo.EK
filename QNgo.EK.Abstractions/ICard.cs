@@ -4,10 +4,10 @@ namespace QNgo.EK.Abstractions
 {
     public interface IGameAction
     {
-        Task ExecuteActionAsync(IGameState gameState, IActionCost actionCost = null);
+        Task ExecuteActionAsync(int playerId, IGameState gameState, IActionCost actionCost = null);
     }
 
-    public interface ICard : IGameAction
+    public interface ICard
     {
         int CardId { get; }
         CardFamily Family { get; }

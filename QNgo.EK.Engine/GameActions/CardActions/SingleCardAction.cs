@@ -1,15 +1,13 @@
 ﻿using QNgo.EK.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace QNgo.EK.Engine.GameActions.CardActions
 {
     public abstract class SingleCardAction : IGameAction
     {
-        public Task ExecuteActionAsync(IGameState gameState, IActionCost actionCost)
+        public Task ExecuteActionAsync(int playerId, IGameState gameState, IActionCost actionCost)
         {
             if (actionCost is null)
                 throw new ArgumentNullException(nameof(actionCost));
@@ -21,6 +19,7 @@ namespace QNgo.EK.Engine.GameActions.CardActions
             if (playedCard.Family != RequiredCardFamily)
                 throw new InvalidOperationException($"Action requires a cost of one card from family {RequiredCardFamily}.");
 
+            gameState.Players.Single(p => p.PlayerId == playerId).Cards.Remove(playedCard);
             gameState.DiscardCard(playedCard);
 
             return ExecuteActionCoreAsync(gameState);

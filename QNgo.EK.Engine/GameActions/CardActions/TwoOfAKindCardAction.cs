@@ -17,17 +17,20 @@ namespace QNgo.EK.Engine.GameActions.CardActions
         protected Random Random { get; set; }
         protected ILogger Logger { get; set; }
 
-        public Task ExecuteActionAsync(IGameState gameState, IActionCost actionCost)
+        public Task ExecuteActionAsync(int playerId, IGameState gameState, IActionCost actionCost)
         {
-            DiscardCards(gameState, actionCost);
+            DiscardCards(playerId, gameState, actionCost);
             return ExecuteCoreAsync(gameState);
         }
 
-        protected void DiscardCards(IGameState gameState, IActionCost actionCost)
+        protected void DiscardCards(int playerId, IGameState gameState, IActionCost actionCost)
         {
             Logger?.LogInformation("Discarding cards.");
+
+            var player = gameState.Players.Single(p => p.PlayerId == playerId);
             foreach (var card in actionCost.Cards)
             {
+                player.Cards.Remove(card);
                 gameState.DiscardCard(card);
             }
         }

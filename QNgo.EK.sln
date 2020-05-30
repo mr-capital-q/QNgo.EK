@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNgo.EK.Abstractions", "QNg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QNgo.EK.App", "QNgo.EK.App\QNgo.EK.App.csproj", "{463F4A75-9BE7-42CD-9DA1-26E72E81A393}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRig", "TestRig\TestRig.csproj", "{3480549A-EE2B-4133-A6BE-4357A37879FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{463F4A75-9BE7-42CD-9DA1-26E72E81A393}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{463F4A75-9BE7-42CD-9DA1-26E72E81A393}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{463F4A75-9BE7-42CD-9DA1-26E72E81A393}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3480549A-EE2B-4133-A6BE-4357A37879FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3480549A-EE2B-4133-A6BE-4357A37879FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3480549A-EE2B-4133-A6BE-4357A37879FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3480549A-EE2B-4133-A6BE-4357A37879FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

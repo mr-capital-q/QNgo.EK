@@ -46,7 +46,7 @@ namespace QNgo.EK.Engine
                 case CardFamily.Lose:
                     throw new NotImplementedException();
                 case CardFamily.ExtraLife:
-                    throw new NotImplementedException();
+                    return _services.GetRequiredService<ExtraLifeAction>();
                 case CardFamily.Nope:
                     throw new NotImplementedException();
                 case CardFamily.Skip:
