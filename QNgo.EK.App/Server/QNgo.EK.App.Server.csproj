@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\QNgo.EK.Engine\QNgo.EK.Engine.csproj" />
+    <ProjectReference Include="..\Client\QNgo.EK.App.Client.csproj" />
+    <ProjectReference Include="..\Shared\QNgo.EK.App.Shared.csproj" />
+  </ItemGroup>
+
+
+</Project>

@@ -13,16 +13,19 @@ namespace QNgo.EK.Engine
         private readonly IGameState _gameState;
         private readonly IGameActionResolver _gameActionResolver;
         private readonly ICardResolver _cardResolver;
+        private readonly IGameStateNotifier _gameStateNotifier;
         private readonly ILogger<TurnEngine> _logger;
 
         public TurnEngine(IGameState gameState,
             IGameActionResolver gameActionResolver,
             ICardResolver cardResolver,
+            IGameStateNotifier gameStateNotifier,
             ILogger<TurnEngine> logger = null)
         {
             _gameState = gameState ?? throw new ArgumentNullException(nameof(gameState));
             _gameActionResolver = gameActionResolver ?? throw new ArgumentNullException(nameof(gameActionResolver));
             _cardResolver = cardResolver ?? throw new ArgumentNullException(nameof(cardResolver));
+            _gameStateNotifier = gameStateNotifier ?? throw new ArgumentNullException(nameof(gameStateNotifier));
             _logger = logger;
         }
 
@@ -46,12 +49,14 @@ namespace QNgo.EK.Engine
             }
             _gameState.ShuffleDeck();
 
+            _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.PlayerId));
+
             await ExecuteTurnPhaseAsync();
         }
 
         public async Task ExecuteTurnPhaseAsync()
         {
-            _logger?.LogInformation($"Executing {_gameState.CurrentPhase} turn phase.");
+            _gameStateNotifier.NotifyTurnPhaseExecuting(_gameState.CurrentPlayer.PlayerId, _gameState.CurrentPhase);
             switch (_gameState.CurrentPhase)
             {
                 case TurnPhase.TurnStart:
@@ -79,8 +84,7 @@ namespace QNgo.EK.Engine
                     if (extraLifeCard is null)
                     {
                         _gameState.CurrentPlayer.IsEliminated = true;
-                        _logger.LogWarning($"{_gameState.CurrentPlayer.PlayerId} has been elimited!!!");
-                        _logger.LogInformation($"{_gameState.Players.Count(c => !c.IsEliminated)} players remain.");
+                        _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Where(p => !p.IsEliminated).Select(p => p.PlayerId));
                     }
                     else
                     {
@@ -97,7 +101,7 @@ namespace QNgo.EK.Engine
                     _gameState.CurrentPhase = TurnPhase.TurnEnd;
                     break;
                 default:
-                    _logger.LogInformation($"Game has ended. {_gameState.Players.Single(c => !c.IsEliminated).PlayerId} is the winner.");
+                    _gameStateNotifier.NotifyEndGameCondition(_gameState.Players.Single(c => !c.IsEliminated).PlayerId);
                     return;
             }
 

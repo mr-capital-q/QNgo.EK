@@ -9,11 +9,14 @@ namespace QNgo.EK.Engine
     public class GameState : IGameState
     {
         private readonly List<IPlayer> _players;
+        private readonly IGameStateNotifier _gameStateNotifier;
         private readonly ILogger<GameState> _logger;
         private int _currentPlayerIndex;
+        private TurnPhase _currentPhase;
 
-        public GameState(ILogger<GameState> logger)
+        public GameState(IGameStateNotifier gameStateNotifier, ILogger<GameState> logger)
         {
+            _gameStateNotifier = gameStateNotifier;
             _logger = logger;
             _players = new List<IPlayer>
             {
@@ -36,27 +39,36 @@ namespace QNgo.EK.Engine
 
         public IList<ICard> DiscardPile { get; } = new List<ICard>();
 
-        public TurnPhase CurrentPhase { get; set; }
+        public TurnPhase CurrentPhase
+        {
+            get => _currentPhase;
+            set
+            {
+                _currentPhase = value;
+                _gameStateNotifier.NotifyTurnPhaseChanged();
+            }
+        }
         public IPlayer CurrentPlayer => _players[_currentPlayerIndex];
         public bool IsPlayDirectionReversed { get; set; }
 
         public void DiscardCard(ICard card)
         {
             DiscardPile.Add(card);
-            _logger.LogInformation($"Adding card {card.Name} to discard pile.");
+            _gameStateNotifier.NotifyDiscardPileStateChanged(DiscardPile.Count);
         }
 
         public ICard DrawCard()
         {
             var card = Deck.First();
             Deck.Remove(card);
-            _logger.LogInformation($"Drawing card. There are {Deck.Count} card(s) left.");
+            _gameStateNotifier.NotifyDeckStateChanged(Deck.Count);
             return card;
         }
 
         public void ReturnToDeck(ICard card, int position = 0)
         {
             Deck.Insert(Math.Max(0, Math.Min(Deck.Count, position)), card);
+            _gameStateNotifier.NotifyDeckStateChanged(Deck.Count);
         }
 
         public void GoToNextPlayer()

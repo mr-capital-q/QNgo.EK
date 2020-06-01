@@ -1,0 +1,124 @@
+﻿@page "/"
+@implements IDisposable
+
+@using Microsoft.AspNetCore.SignalR.Client
+
+@inject HttpClient _httpClient;
+@inject NavigationManager _navigationManager;
+
+<div class="d-flex flex-column h-100">
+    <div class="flex-fill">
+        @if (_card != null)
+        {
+            <PlayingCard Model="_card" IsFlipped="_isFlipped">
+                <FrontFace>
+                    <FrontCardFace Model="_card" />
+                </FrontFace>
+                <BackFace>
+                    <BackCardFace />
+                </BackFace>
+            </PlayingCard>
+        }
+        <button @onclick="Go">Go</button>
+        <button @onclick="() => _isFlipped = !_isFlipped">Flip</button>
+        <div>
+            @_message
+        </div>
+        <div>
+            @_deckMessage
+        </div>
+        <div>
+            @_discardPileMessage
+        </div>
+        <div>
+            @_playersMessage
+        </div>
+        <div>
+            @_winnerMessage
+        </div>
+    </div>
+    <PlayingHand Cards="_cards">
+        <CardTemplate>
+            <PlayingCard class="card-sm hover" Click="() => SelectCard(context)">
+                <FrontFace>
+                    <FrontCardFace Model="context" />
+                </FrontFace>
+                <BackFace>
+                    <BackCardFace />
+                </BackFace>
+            </PlayingCard>
+        </CardTemplate>
+    </PlayingHand>
+</div>
+
+
+
+@code {
+    private HubConnection hubConnection;
+    private string _message;
+    private string _deckMessage;
+    private string _discardPileMessage;
+    private string _playersMessage;
+    private string _winnerMessage;
+    private bool _isFlipped;
+    private List<QNgo.EK.Abstractions.ICard> _cards = new List<Abstractions.ICard>();
+    private QNgo.EK.Abstractions.ICard _card;
+
+    protected async override Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(_navigationManager.ToAbsoluteUri("/gameHub"))
+            .Build();
+
+        hubConnection.On<int, Abstractions.TurnPhase>("TurnPhaseExecuting", (currentPlayerId, currentTurnPhase) =>
+        {
+            _message = $"Player {currentPlayerId} is executing the {currentTurnPhase} turn phase.";
+            StateHasChanged();
+        });
+
+        hubConnection.On<int>("DiscardPileStateChanged", cardCount =>
+        {
+            _discardPileMessage = $"There are {cardCount} card(s) in the discard pile.";
+            StateHasChanged();
+        });
+
+        hubConnection.On<int>("DeckStateChanged", cardCount =>
+        {
+            _deckMessage = $"There are {cardCount} card(s) left in the draw pile.";
+            StateHasChanged();
+        });
+
+        hubConnection.On<IEnumerable<int>>("PlayersChanged", players =>
+        {
+            _playersMessage = $"Players {string.Join(", ", players)} are actively playing.";
+            StateHasChanged();
+        });
+
+        hubConnection.On<int>("EndGameCondition", winningPlayerId =>
+        {
+            _winnerMessage = $"The winner is player {winningPlayerId}!";
+            StateHasChanged();
+        });
+
+        await hubConnection.StartAsync();
+
+        //var repo = new QNgo.EK.Engine.FakeCardRepo();
+        //_cards = (await repo.GetAllCardsAsync()).GroupBy(c => c.Family).Select(g => g.First()).ToList();
+    }
+
+    private async void Go()
+    {
+        _ = _httpClient.GetAsync("api/Games");
+    }
+
+    private void SelectCard(QNgo.EK.Abstractions.ICard card)
+    {
+        _card = card;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        _ = hubConnection.DisposeAsync();
+    }
+}
