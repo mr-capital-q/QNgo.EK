@@ -67,6 +67,7 @@ namespace QNgo.EK.Engine
                     var gameAction = await _gameActionResolver.GetGameActionAsync(playerAction);
                     var playedCards = await Task.WhenAll(playerAction.CardIds.Select(id => _cardResolver.GetCardAsync(id)));
                     await gameAction.ExecuteActionAsync(_gameState.CurrentPlayer.PlayerId, _gameState, new ActionCost(playedCards));
+                    _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.GetState()));
                     break;
                 case TurnPhase.TurnEnd:
                     _gameState.GoToNextPlayer();
@@ -84,13 +85,13 @@ namespace QNgo.EK.Engine
                     if (extraLifeCard is null)
                     {
                         _gameState.CurrentPlayer.IsEliminated = true;
-                        _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.GetState()));
                     }
                     else
                     {
                         var action = await _gameActionResolver.GetGameActionAsync(PlayerAction.PlayCard(_gameState.CurrentPlayer.PlayerId, extraLifeCard.CardId));
                         await action.ExecuteActionAsync(_gameState.CurrentPlayer.PlayerId, _gameState, new ActionCost(new List<ICard> { extraLifeCard, loseCard }));
                     }
+                    _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.GetState()));
 
                     if (_gameState.Players.Count(c => !c.IsEliminated) == 1)
                     {

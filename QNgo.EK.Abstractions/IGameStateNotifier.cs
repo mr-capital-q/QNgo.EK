@@ -7,8 +7,8 @@ namespace QNgo.EK.Abstractions
     {
         void NotifyTurnPhaseChanged();
         void NotifyTurnPhaseExecuting(int currentPlayerId, TurnPhase currentTurnPhase);
-        void NotifyDeckStateChanged(int cardCount);
-        void NotifyDiscardPileStateChanged(int cardCount);
+        void NotifyDeckStateChanged(IEnumerable<ICardState> cards);
+        void NotifyDiscardPileStateChanged(IEnumerable<ICardState> cards);
         void NotifyPlayersChanged(IEnumerable<IPlayerState> playerStates);
         void NotifyEndGameCondition(int winningPlayerId);
     }

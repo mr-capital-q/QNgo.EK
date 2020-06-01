@@ -11,7 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\QNgo.EK.Engine\QNgo.EK.Engine.csproj" />
     <ProjectReference Include="..\Client\QNgo.EK.App.Client.csproj" />
-    <ProjectReference Include="..\Shared\QNgo.EK.App.Shared.csproj" />
   </ItemGroup>
 
 

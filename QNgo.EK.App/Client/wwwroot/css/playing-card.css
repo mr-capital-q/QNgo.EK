@@ -19,6 +19,13 @@
         min-height: 180px;
     }
 
+    .card.card-xs {
+        width: 63px;
+        height: 90px;
+        min-width: 63px;
+        min-height: 90px;
+    }
+
     .card.flipped {
         transform: rotateY(180deg);
     }
@@ -41,6 +48,10 @@
 
         .card.card-sm, .card.card-sm > .front-content, .card.card-sm > .back-content {
             border-radius: 4px;
+        }
+
+        .card.card-xs, .card.card-xs > .front-content, .card.card-xs > .back-content {
+            border-radius: 2px;
         }
 
         .card > .front-content, .card > .back-content {
@@ -101,6 +112,23 @@
 
 .card-sm .front-content .card-face {
     padding: 6px;
+}
+
+.card-xs .card-face {
+    border: 3px solid gray;
+}
+
+    .card-xs .card-face .card-title {
+        font-size: 5px;
+    }
+
+    .card-xs .card-face .card-description {
+        font-size: 3.5px;
+        line-height: 3.5px;
+    }
+
+.card-xs .front-content .card-face {
+    padding: 3px;
 }
 
 .card-face img.card-image {

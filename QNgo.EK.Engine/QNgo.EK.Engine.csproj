@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QNgo.EK.Abstractions\QNgo.EK.Abstractions.csproj" />
+    <ProjectReference Include="..\QNgo.EK.Shared\QNgo.EK.Shared.csproj" />
   </ItemGroup>
 
 </Project>

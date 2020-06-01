@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using QNgo.EK.Abstractions;
+using QNgo.EK.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,21 +57,21 @@ namespace QNgo.EK.Engine
         public void DiscardCard(ICard card)
         {
             DiscardPile.Add(card);
-            _gameStateNotifier.NotifyDiscardPileStateChanged(DiscardPile.Count);
+            _gameStateNotifier.NotifyDiscardPileStateChanged(DiscardPile.Select(c => CardState.Create(c.CardId, card.Name, card.Description)));
         }
 
         public ICard DrawCard()
         {
             var card = Deck.First();
             Deck.Remove(card);
-            _gameStateNotifier.NotifyDeckStateChanged(Deck.Count);
+            _gameStateNotifier.NotifyDeckStateChanged(Deck.Select(c => CardState.CreateFlipped()));
             return card;
         }
 
         public void ReturnToDeck(ICard card, int position = 0)
         {
             Deck.Insert(Math.Max(0, Math.Min(Deck.Count, position)), card);
-            _gameStateNotifier.NotifyDeckStateChanged(Deck.Count);
+            _gameStateNotifier.NotifyDeckStateChanged(Deck.Select(c => CardState.CreateFlipped()));
         }
 
         public void GoToNextPlayer()

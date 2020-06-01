@@ -8,57 +8,99 @@
 
 <div class="d-flex flex-column h-100">
     <div class="flex-fill">
-        @if (_card != null)
-        {
-            <PlayingCard Model="_card" IsFlipped="_isFlipped">
-                <FrontFace>
-                    <FrontCardFace Model="_card" />
-                </FrontFace>
-                <BackFace>
-                    <BackCardFace />
-                </BackFace>
-            </PlayingCard>}
+        @*@if (_card != null)
+            {
+                <PlayingCard Model="_card" IsFlipped="_isFlipped">
+                    <FrontFace>
+                        <FrontCardFace Model="_card" />
+                    </FrontFace>
+                    <BackFace>
+                        <BackCardFace />
+                    </BackFace>
+                </PlayingCard>}*@
         <button @onclick="Go">Go</button>
         <button @onclick="() => _isFlipped = !_isFlipped">Flip</button>
         <div>
             @foreach (var state in _playerStates)
             {
-                <div>
+                <h3>
                     @($"{(state.PlayerId == _currentPlayerId ? "⚫" : string.Empty)}{state.DisplayName}{(state.IsEliminated ? " ☠" : string.Empty)}")
-                </div>}
+                </h3>
+                <div style="@(state.IsEliminated ? "opacity:0.5" : string.Empty)">
+                    @{
+                        <PlayingHand Cards="GetDummyCards(state.HandCardCount)">
+                            <CardTemplate>
+                                <PlayingCard class="card-xs hover" IsFlipped="context.IsFlipped">
+                                    <BackFace>
+                                        <BackCardFace />
+                                    </BackFace>
+                                </PlayingCard>
+                            </CardTemplate>
+                        </PlayingHand>
+                    }
+                </div>
+            }
         </div>
         <div>
-            @_deckMessage
+            <div>
+                Draw pile
+            </div>
+            <CardPile Cards="_deck">
+                <CardTemplate>
+                    <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
+                        <FrontFace>
+                            <FrontCardFace Model="context" />
+                        </FrontFace>
+                        <BackFace>
+                            <BackCardFace />
+                        </BackFace>
+                    </PlayingCard>
+                </CardTemplate>
+            </CardPile>
         </div>
         <div>
-            @_discardPileMessage
+            <div>
+                Discard pile
+            </div>
+            <CardPile Cards="_discardPile">
+                <CardTemplate>
+                    <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
+                        <FrontFace>
+                            <FrontCardFace Model="context" />
+                        </FrontFace>
+                        <BackFace>
+                            <BackCardFace />
+                        </BackFace>
+                    </PlayingCard>
+                </CardTemplate>
+            </CardPile>
         </div>
         <div>
             @_winnerMessage
         </div>
     </div>
-    <PlayingHand Cards="_cards">
-        <CardTemplate>
-            <PlayingCard class="card-sm hover" Click="() => SelectCard(context)">
-                <FrontFace>
-                    <FrontCardFace Model="context" />
-                </FrontFace>
-                <BackFace>
-                    <BackCardFace />
-                </BackFace>
-            </PlayingCard>
-        </CardTemplate>
-    </PlayingHand>
+    @*<PlayingHand Cards="_cards">
+            <CardTemplate>
+                <PlayingCard class="card-sm hover" Click="() => SelectCard(context)">
+                    <FrontFace>
+                        <FrontCardFace Model="context" />
+                    </FrontFace>
+                    <BackFace>
+                        <BackCardFace />
+                    </BackFace>
+                </PlayingCard>
+            </CardTemplate>
+        </PlayingHand>*@
 </div>
 
 
 
 @code { private HubConnection hubConnection;
-    private string _deckMessage;
-    private string _discardPileMessage;
     private string _winnerMessage;
     private int _currentPlayerId;
-    private IEnumerable<PlayerState> _playerStates = Enumerable.Empty<PlayerState>();
+    private ICollection<CardState> _deck = new List<CardState>();
+    private ICollection<CardState> _discardPile = new List<CardState>();
+    private ICollection<PlayerState> _playerStates = new List<PlayerState>();
     private bool _isFlipped;
     private List<QNgo.EK.Abstractions.ICard> _cards = new List<Abstractions.ICard>();
     private QNgo.EK.Abstractions.ICard _card;
@@ -75,21 +117,21 @@
             StateHasChanged();
         });
 
-        hubConnection.On<int>("DiscardPileStateChanged", cardCount =>
+        hubConnection.On<IEnumerable<CardState>>("DiscardPileStateChanged", cards =>
         {
-            _discardPileMessage = $"There are {cardCount} card(s) in the discard pile.";
+            _discardPile = cards.ToList();
             StateHasChanged();
         });
 
-        hubConnection.On<int>("DeckStateChanged", cardCount =>
+        hubConnection.On<IEnumerable<CardState>>("DeckStateChanged", cards =>
         {
-            _deckMessage = $"There are {cardCount} card(s) left in the draw pile.";
+            _deck = cards.ToList();
             StateHasChanged();
         });
 
         hubConnection.On<IEnumerable<PlayerState>>("PlayersChanged", players =>
         {
-            _playerStates = players;
+            _playerStates = players.ToList();
             StateHasChanged();
         });
 
@@ -116,20 +158,18 @@
         StateHasChanged();
     }
 
+    private List<Abstractions.States.ICardState> GetDummyCards(int count)
+    {
+        var cards = new List<Abstractions.States.ICardState>();
+        for (int i = 0; i < count; i++)
+        {
+            cards.Add(CardState.CreateFlipped());
+        }
+        return cards;
+    }
+
     public void Dispose()
     {
         _ = hubConnection.DisposeAsync();
-    }
-
-    public class PlayerState : Abstractions.States.IPlayerState
-    {
-
-        public int PlayerId { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public bool IsEliminated { get; set; }
-
-        public int HandCardCount { get; set; }
     }
 }

@@ -1,0 +1,19 @@
+﻿@typeparam T
+
+<div class="playing-hand d-flex align-items-end">
+    @foreach (var card in Cards.Take(10))
+    {
+        <div style="margin-right:-69px;">
+            @CardTemplate(card)
+        </div>
+    }
+    <h3 style="z-index:2">@Cards.Count</h3>
+</div>
+
+@code {
+    [Parameter]
+    public ICollection<T> Cards { get; set; } = new List<T>();
+
+    [Parameter]
+    public RenderFragment<T> CardTemplate { get; set; }
+}

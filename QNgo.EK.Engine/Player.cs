@@ -1,6 +1,7 @@
 ﻿using QNgo.EK.Abstractions;
 using QNgo.EK.Abstractions.States;
 using QNgo.EK.Engine.PlayerActions;
+using QNgo.EK.Shared;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -58,26 +59,5 @@ namespace QNgo.EK.Engine
         }
 
         public override string ToString() => $"{PlayerId} - {DisplayName}";
-
-        public class PlayerState : IPlayerState
-        {
-            public PlayerState(int playerId, string displayName, bool isEliminated, int handCardCount)
-            {
-                PlayerId = playerId;
-                DisplayName = displayName;
-                IsEliminated = isEliminated;
-                HandCardCount = handCardCount;
-            }
-
-            public int PlayerId { get; }
-
-            public string DisplayName { get; }
-
-            public bool IsEliminated { get; }
-
-            public int HandCardCount { get; }
-
-            public override string ToString() => $"{PlayerId} - {DisplayName}";
-        }
     }
 }

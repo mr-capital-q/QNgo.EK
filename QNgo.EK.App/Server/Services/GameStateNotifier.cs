@@ -4,6 +4,7 @@ using QNgo.EK.Abstractions;
 using QNgo.EK.Abstractions.States;
 using QNgo.EK.App.Server.Hubs;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QNgo.EK.App.Server.Services
 {
@@ -28,16 +29,16 @@ namespace QNgo.EK.App.Server.Services
             _ = _gameHub.Clients.All.SendAsync("TurnPhaseExecuting", currentPlayerId, currentTurnPhase);
         }
 
-        public void NotifyDeckStateChanged(int cardCount)
+        public void NotifyDeckStateChanged(IEnumerable<ICardState> cards)
         {
-            _logger?.LogInformation($"There are {cardCount} cards left in the deck.");
-            _ = _gameHub.Clients.All.SendAsync("DeckStateChanged", cardCount);
+            _logger?.LogInformation($"There are {cards.Count()} cards left in the deck.");
+            _ = _gameHub.Clients.All.SendAsync("DeckStateChanged", cards);
         }
 
-        public void NotifyDiscardPileStateChanged(int cardCount)
+        public void NotifyDiscardPileStateChanged(IEnumerable<ICardState> cards)
         {
-            _logger?.LogInformation($"There are {cardCount} cards in the discard pile.");
-            _ = _gameHub.Clients.All.SendAsync("DiscardPileStateChanged", cardCount);
+            _logger?.LogInformation($"There are {cards.Count()} cards in the discard pile.");
+            _ = _gameHub.Clients.All.SendAsync("DiscardPileStateChanged", cards);
         }
 
         public void NotifyPlayersChanged(IEnumerable<IPlayerState> playerStates)
