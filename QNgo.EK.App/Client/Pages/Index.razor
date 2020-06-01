@@ -10,22 +10,22 @@
     <div class="flex-fill">
         @if (_card != null)
         {
-<PlayingCard Model="_card" IsFlipped="_isFlipped">
-    <FrontFace>
-        <FrontCardFace Model="_card" />
-    </FrontFace>
-    <BackFace>
-        <BackCardFace />
-    </BackFace>
-</PlayingCard>}
+            <PlayingCard Model="_card" IsFlipped="_isFlipped">
+                <FrontFace>
+                    <FrontCardFace Model="_card" />
+                </FrontFace>
+                <BackFace>
+                    <BackCardFace />
+                </BackFace>
+            </PlayingCard>}
         <button @onclick="Go">Go</button>
         <button @onclick="() => _isFlipped = !_isFlipped">Flip</button>
         <div>
             @foreach (var state in _playerStates)
             {
-<div>
-    @($"{(state.PlayerId == _currentPlayerId ? "⚫" : string.Empty)}{state.DisplayName}{(state.IsEliminated ? " ☠" : string.Empty)}")
-</div>      }
+                <div>
+                    @($"{(state.PlayerId == _currentPlayerId ? "⚫" : string.Empty)}{state.DisplayName}{(state.IsEliminated ? " ☠" : string.Empty)}")
+                </div>}
         </div>
         <div>
             @_deckMessage
@@ -131,4 +131,5 @@
         public bool IsEliminated { get; set; }
 
         public int HandCardCount { get; set; }
-    } }
+    }
+}
