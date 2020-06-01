@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using QNgo.EK.Abstractions;
+using QNgo.EK.Abstractions.States;
 using QNgo.EK.App.Server.Hubs;
 using System.Collections.Generic;
 
@@ -39,10 +40,10 @@ namespace QNgo.EK.App.Server.Services
             _ = _gameHub.Clients.All.SendAsync("DiscardPileStateChanged", cardCount);
         }
 
-        public void NotifyPlayersChanged(IEnumerable<int> players)
+        public void NotifyPlayersChanged(IEnumerable<IPlayerState> playerStates)
         {
-            _logger?.LogInformation($"Players {string.Join(", ", players)} are actively playing.");
-            _ = _gameHub.Clients.All.SendAsync("PlayersChanged", players);
+            _logger?.LogInformation($"Players {string.Join(", ", playerStates)} are actively playing.");
+            _ = _gameHub.Clients.All.SendAsync("PlayersChanged", playerStates);
         }
 
         public void NotifyEndGameCondition(int winningPlayerId)

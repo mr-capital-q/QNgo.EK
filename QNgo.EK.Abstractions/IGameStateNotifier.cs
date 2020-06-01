@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using QNgo.EK.Abstractions.States;
+using System.Collections.Generic;
 
 namespace QNgo.EK.Abstractions
 {
@@ -8,7 +9,7 @@ namespace QNgo.EK.Abstractions
         void NotifyTurnPhaseExecuting(int currentPlayerId, TurnPhase currentTurnPhase);
         void NotifyDeckStateChanged(int cardCount);
         void NotifyDiscardPileStateChanged(int cardCount);
-        void NotifyPlayersChanged(IEnumerable<int> players);
+        void NotifyPlayersChanged(IEnumerable<IPlayerState> playerStates);
         void NotifyEndGameCondition(int winningPlayerId);
     }
 }

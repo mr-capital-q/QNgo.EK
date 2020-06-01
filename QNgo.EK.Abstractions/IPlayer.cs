@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using QNgo.EK.Abstractions.States;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace QNgo.EK.Abstractions
@@ -36,6 +37,8 @@ namespace QNgo.EK.Abstractions
     public interface IPlayer : IPlayerHand, IGetPlayerAction, IGetPlayerQuickAction, IPlayerCardDisplay, IPlayerCardPicker, IPlayerTargetPlayer
     {
         int PlayerId { get; }
+        string DisplayName { get; }
         bool IsEliminated { get; set; }
+        IPlayerState GetState();
     }
 }

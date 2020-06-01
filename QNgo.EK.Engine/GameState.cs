@@ -20,9 +20,11 @@ namespace QNgo.EK.Engine
             _logger = logger;
             _players = new List<IPlayer>
             {
-                new Player(1),
-                new Player(2),
-                new Player(3),
+                new Player(1, "John"),
+                new Player(2, "Jane"),
+                new Player(3, "Meep"),
+                new Player(4, "Milo"),
+                new Player(5, "Moop")
             };
 
             Deck = new FakeCardRepo().GetAllCardsAsync()

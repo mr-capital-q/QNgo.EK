@@ -49,7 +49,7 @@ namespace QNgo.EK.Engine
             }
             _gameState.ShuffleDeck();
 
-            _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.PlayerId));
+            _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.GetState()));
 
             await ExecuteTurnPhaseAsync();
         }
@@ -84,7 +84,7 @@ namespace QNgo.EK.Engine
                     if (extraLifeCard is null)
                     {
                         _gameState.CurrentPlayer.IsEliminated = true;
-                        _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Where(p => !p.IsEliminated).Select(p => p.PlayerId));
+                        _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.GetState()));
                     }
                     else
                     {

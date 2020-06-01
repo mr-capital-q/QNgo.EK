@@ -10,28 +10,28 @@
     <div class="flex-fill">
         @if (_card != null)
         {
-            <PlayingCard Model="_card" IsFlipped="_isFlipped">
-                <FrontFace>
-                    <FrontCardFace Model="_card" />
-                </FrontFace>
-                <BackFace>
-                    <BackCardFace />
-                </BackFace>
-            </PlayingCard>
-        }
+<PlayingCard Model="_card" IsFlipped="_isFlipped">
+    <FrontFace>
+        <FrontCardFace Model="_card" />
+    </FrontFace>
+    <BackFace>
+        <BackCardFace />
+    </BackFace>
+</PlayingCard>}
         <button @onclick="Go">Go</button>
         <button @onclick="() => _isFlipped = !_isFlipped">Flip</button>
         <div>
-            @_message
+            @foreach (var state in _playerStates)
+            {
+<div>
+    @($"{(state.PlayerId == _currentPlayerId ? "⚫" : string.Empty)}{state.DisplayName}{(state.IsEliminated ? " ☠" : string.Empty)}")
+</div>      }
         </div>
         <div>
             @_deckMessage
         </div>
         <div>
             @_discardPileMessage
-        </div>
-        <div>
-            @_playersMessage
         </div>
         <div>
             @_winnerMessage
@@ -53,13 +53,12 @@
 
 
 
-@code {
-    private HubConnection hubConnection;
-    private string _message;
+@code { private HubConnection hubConnection;
     private string _deckMessage;
     private string _discardPileMessage;
-    private string _playersMessage;
     private string _winnerMessage;
+    private int _currentPlayerId;
+    private IEnumerable<PlayerState> _playerStates = Enumerable.Empty<PlayerState>();
     private bool _isFlipped;
     private List<QNgo.EK.Abstractions.ICard> _cards = new List<Abstractions.ICard>();
     private QNgo.EK.Abstractions.ICard _card;
@@ -72,7 +71,7 @@
 
         hubConnection.On<int, Abstractions.TurnPhase>("TurnPhaseExecuting", (currentPlayerId, currentTurnPhase) =>
         {
-            _message = $"Player {currentPlayerId} is executing the {currentTurnPhase} turn phase.";
+            _currentPlayerId = currentPlayerId;
             StateHasChanged();
         });
 
@@ -88,9 +87,9 @@
             StateHasChanged();
         });
 
-        hubConnection.On<IEnumerable<int>>("PlayersChanged", players =>
+        hubConnection.On<IEnumerable<PlayerState>>("PlayersChanged", players =>
         {
-            _playersMessage = $"Players {string.Join(", ", players)} are actively playing.";
+            _playerStates = players;
             StateHasChanged();
         });
 
@@ -121,4 +120,15 @@
     {
         _ = hubConnection.DisposeAsync();
     }
-}
+
+    public class PlayerState : Abstractions.States.IPlayerState
+    {
+
+        public int PlayerId { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public bool IsEliminated { get; set; }
+
+        public int HandCardCount { get; set; }
+    } }
