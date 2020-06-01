@@ -1,5 +1,7 @@
 ﻿@import url('playing-card.css');
 @import url('playing-hand.css');
+@import url('player-hand.css');
+@import url('card-pile.css');
 
 app {
     perspective: 2000px;

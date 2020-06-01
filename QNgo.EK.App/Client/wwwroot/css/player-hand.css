@@ -1,0 +1,13 @@
+﻿.player-hand-container {
+    display: inline-grid;
+    margin: 12px 48px;
+}
+
+.player-hand {
+    display: grid;
+}
+
+    .player-hand > * {
+        grid-area: 1/1/1/1;
+        transform-origin: center 120px;
+    }

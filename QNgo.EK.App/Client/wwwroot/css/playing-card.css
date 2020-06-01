@@ -3,21 +3,13 @@
     height: 360px;
     min-width: 252px;
     min-height: 360px;
-    margin: 4px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border: 0;
     position: relative;
     transform-style: preserve-3d;
     transition: 0.3s;
     /* Cubic ease out easing */
     transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
-
-    .card.card-sm {
-        width: 126px;
-        height: 180px;
-        min-width: 126px;
-        min-height: 180px;
-    }
 
     .card.card-xs {
         width: 63px;
@@ -26,11 +18,22 @@
         min-height: 90px;
     }
 
+    .card.card-sm {
+        width: 126px;
+        height: 180px;
+        min-width: 126px;
+        min-height: 180px;
+    }
+
+    .card.shadow {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
     .card.flipped {
         transform: rotateY(180deg);
     }
 
-    .card.hover:hover, .card.hover:hover.flipped {
+    .card.shadow.hover:hover, .card.shadow.hover:hover.flipped {
         box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
     }
 

@@ -20,60 +20,64 @@
                 </PlayingCard>}*@
         <button @onclick="Go">Go</button>
         <button @onclick="() => _isFlipped = !_isFlipped">Flip</button>
-        <div>
+        <div class="d-flex">
             @foreach (var state in _playerStates)
             {
-                <h3>
-                    @($"{(state.PlayerId == _currentPlayerId ? "⚫" : string.Empty)}{state.DisplayName}{(state.IsEliminated ? " ☠" : string.Empty)}")
-                </h3>
-                <div style="@(state.IsEliminated ? "opacity:0.5" : string.Empty)">
-                    @{
-                        <PlayingHand Cards="GetDummyCards(state.HandCardCount)">
-                            <CardTemplate>
-                                <PlayingCard class="card-xs hover" IsFlipped="context.IsFlipped">
-                                    <BackFace>
-                                        <BackCardFace />
-                                    </BackFace>
-                                </PlayingCard>
-                            </CardTemplate>
-                        </PlayingHand>
-                    }
+                <div>
+                    <h3>
+                        @($"{(state.PlayerId == _currentPlayerId ? "⚫" : string.Empty)}{state.DisplayName}{(state.IsEliminated ? " ☠" : string.Empty)}")
+                    </h3>
+                    <div style="@(state.IsEliminated ? "opacity:0.5" : string.Empty)">
+                        @{
+                            <PlayerHand Cards="GetDummyCards(state.HandCardCount)">
+                                <CardTemplate>
+                                    <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
+                                        <BackFace>
+                                            <BackCardFace />
+                                        </BackFace>
+                                    </PlayingCard>
+                                </CardTemplate>
+                            </PlayerHand>
+                        }
+                    </div>
                 </div>
             }
         </div>
-        <div>
+        <div class="d-flex">
             <div>
-                Draw pile
+                <div>
+                    Draw pile
+                </div>
+                <CardPile Cards="_deck" class="mx-2">
+                    <CardTemplate>
+                        <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
+                            <FrontFace>
+                                <FrontCardFace Model="context" />
+                            </FrontFace>
+                            <BackFace>
+                                <BackCardFace />
+                            </BackFace>
+                        </PlayingCard>
+                    </CardTemplate>
+                </CardPile>
             </div>
-            <CardPile Cards="_deck">
-                <CardTemplate>
-                    <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
-                        <FrontFace>
-                            <FrontCardFace Model="context" />
-                        </FrontFace>
-                        <BackFace>
-                            <BackCardFace />
-                        </BackFace>
-                    </PlayingCard>
-                </CardTemplate>
-            </CardPile>
-        </div>
-        <div>
             <div>
-                Discard pile
+                <div>
+                    Discard pile
+                </div>
+                <CardPile Cards="_discardPile" class="mx-2">
+                    <CardTemplate>
+                        <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
+                            <FrontFace>
+                                <FrontCardFace Model="context" />
+                            </FrontFace>
+                            <BackFace>
+                                <BackCardFace />
+                            </BackFace>
+                        </PlayingCard>
+                    </CardTemplate>
+                </CardPile>
             </div>
-            <CardPile Cards="_discardPile">
-                <CardTemplate>
-                    <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
-                        <FrontFace>
-                            <FrontCardFace Model="context" />
-                        </FrontFace>
-                        <BackFace>
-                            <BackCardFace />
-                        </BackFace>
-                    </PlayingCard>
-                </CardTemplate>
-            </CardPile>
         </div>
         <div>
             @_winnerMessage
@@ -147,7 +151,7 @@
         //_cards = (await repo.GetAllCardsAsync()).GroupBy(c => c.Family).Select(g => g.First()).ToList();
     }
 
-    private async void Go()
+    private void Go()
     {
         _ = _httpClient.GetAsync("api/Games");
     }

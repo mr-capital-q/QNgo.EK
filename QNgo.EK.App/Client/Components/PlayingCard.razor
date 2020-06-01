@@ -36,14 +36,14 @@
     {
         get
         {
-            var coreClasses = $"card{(IsFlipped ? " flipped" : string.Empty)}";
+            var coreClass = $"card{(IsFlipped ? " flipped" : string.Empty)}";
 
             if (AdditionalAttributes != null &&
                 AdditionalAttributes.TryGetValue("class", out var @class) &&
                 !string.IsNullOrEmpty(Convert.ToString(@class)))
-                return $"{@class} {coreClasses}";
+                return $"{@class} {coreClass}";
 
-            return coreClasses;
+            return coreClass;
         }
     }
 
