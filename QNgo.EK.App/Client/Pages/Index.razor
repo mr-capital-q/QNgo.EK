@@ -85,11 +85,9 @@
 
 @code { private HubConnection hubConnection;
     private string _winnerMessage;
-    private int _currentPlayerId;
     private ICollection<CardState> _deck = new List<CardState>();
     private ICollection<CardState> _discardPile = new List<CardState>();
     private ICollection<PlayerState> _playerStates = new List<PlayerState>();
-    private IDictionary<int, ICollection<CardState>> _playerCards = new Dictionary<int, ICollection<CardState>>();
     private bool _isFlipped;
     private List<QNgo.EK.Abstractions.ICard> _cards = new List<Abstractions.ICard>();
     private QNgo.EK.Abstractions.ICard _card;
@@ -99,12 +97,6 @@
         hubConnection = new HubConnectionBuilder()
             .WithUrl(_navigationManager.ToAbsoluteUri("/gameHub"))
             .Build();
-
-        hubConnection.On<int, Abstractions.TurnPhase>("TurnPhaseExecuting", (currentPlayerId, currentTurnPhase) =>
-        {
-            _currentPlayerId = currentPlayerId;
-            StateHasChanged();
-        });
 
         hubConnection.On<IEnumerable<CardState>>("DiscardPileStateChanged", cards =>
         {
@@ -126,7 +118,7 @@
 
         hubConnection.On<int>("EndGameCondition", winningPlayerId =>
         {
-            _winnerMessage = $"The winner is player {winningPlayerId}!";
+            _winnerMessage = $"The winner is player {_playerStates.FirstOrDefault(p => p.PlayerId == winningPlayerId)?.DisplayName}!";
             StateHasChanged();
         });
 
