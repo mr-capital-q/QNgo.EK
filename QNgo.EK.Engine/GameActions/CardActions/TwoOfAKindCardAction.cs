@@ -30,7 +30,7 @@ namespace QNgo.EK.Engine.GameActions.CardActions
             var player = gameState.Players.Single(p => p.PlayerId == playerId);
             foreach (var card in actionCost.Cards)
             {
-                player.Cards.Remove(card);
+                player.RemoveCard(card.CardId);
                 gameState.DiscardCard(card);
             }
         }
@@ -52,8 +52,8 @@ namespace QNgo.EK.Engine.GameActions.CardActions
                 return;
             }
 
-            targetedPlayer.Cards.Remove(card);
-            gameState.CurrentPlayer.Cards.Add(card);
+            targetedPlayer.RemoveCard(card.CardId);
+            gameState.CurrentPlayer.AddCard(card);
         }
     }
 }

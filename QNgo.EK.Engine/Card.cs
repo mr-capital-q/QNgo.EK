@@ -1,4 +1,5 @@
 ﻿using QNgo.EK.Abstractions;
+using System;
 using System.Threading.Tasks;
 
 namespace QNgo.EK.Engine
@@ -20,5 +21,7 @@ namespace QNgo.EK.Engine
         public string Name { get; }
 
         public string Description { get; }
+
+        public Guid StateToken { get; } = Guid.NewGuid();
     }
 }

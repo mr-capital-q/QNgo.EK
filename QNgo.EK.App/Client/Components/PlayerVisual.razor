@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+
+@implements IDisposable
+@inject NavigationManager _navigationManager
+
+<div>
+    <h3 class="text-center">
+        @($"{(_isTurnPlayer ? "⚫" : string.Empty)}{Player?.DisplayName}{(Player?.IsEliminated == true ? " ☠" : string.Empty)}")
+    </h3>
+    <div style="@(Player.IsEliminated ? "opacity:0.5" : string.Empty)">
+        @{
+            <PlayerHand Cards="_cards">
+                <CardTemplate>
+                    <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
+                        <BackFace>
+                            <BackCardFace />
+                        </BackFace>
+                    </PlayingCard>
+                </CardTemplate>
+            </PlayerHand>
+        }
+    </div>
+</div>
+
+@code {
+    private HubConnection _hubConnection;
+    private bool _isTurnPlayer;
+    private ICollection<CardState> _cards = new List<CardState>();
+
+    [Parameter]
+    public QNgo.EK.Abstractions.States.IPlayerState Player { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(_navigationManager.ToAbsoluteUri("/gameHub"))
+            .Build();
+
+        _hubConnection.On<int, IEnumerable<CardState>>("PlayerHandChanged", (playerId, cards) =>
+        {
+            if (Player is null || Player.PlayerId != playerId)
+                return;
+
+            _cards = cards.ToList();
+            StateHasChanged();
+        });
+
+        _hubConnection.On<int, Abstractions.TurnPhase>("TurnPhaseExecuting", (currentPlayerId, currentTurnPhase) =>
+        {
+            _isTurnPlayer = Player?.PlayerId == currentPlayerId;
+            StateHasChanged();
+        });
+
+        await _hubConnection.StartAsync();
+    }
+
+    public void Dispose()
+    {
+        _ = _hubConnection.DisposeAsync();
+    }
+}

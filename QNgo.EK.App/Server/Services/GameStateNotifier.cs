@@ -47,6 +47,12 @@ namespace QNgo.EK.App.Server.Services
             _ = _gameHub.Clients.All.SendAsync("PlayersChanged", playerStates);
         }
 
+        public void NotifyPlayerHandChanged(int playerId, IEnumerable<ICardState> cards)
+        {
+            _logger?.LogInformation($"Player {playerId} has {cards.Count()} card(s).");
+            _ = _gameHub.Clients.All.SendAsync("PlayerHandChanged", playerId, cards);
+        }
+
         public void NotifyEndGameCondition(int winningPlayerId)
         {
             _logger?.LogInformation($"Player {winningPlayerId} is the winner!");

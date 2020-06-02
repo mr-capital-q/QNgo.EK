@@ -4,24 +4,28 @@ using QNgo.EK.Engine.PlayerActions;
 using QNgo.EK.Shared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace QNgo.EK.Engine
 {
     public class Player : IPlayer
     {
-        public Player(int id, string displayName)
+        private List<ICard> _cards = new List<ICard>();
+        private readonly IGameStateNotifier _gameNotifier;
+
+        public Player(int id, string displayName, IGameStateNotifier gameNotifier)
         {
             PlayerId = id;
             DisplayName = displayName;
-            Cards = new List<ICard>();
+            _gameNotifier = gameNotifier;
         }
 
         public int PlayerId { get; }
 
         public string DisplayName { get; }
 
-        public ICollection<ICard> Cards { get; }
+        public IReadOnlyCollection<ICard> Cards => _cards;
 
         public bool IsEliminated { get; set; }
 
@@ -33,8 +37,9 @@ namespace QNgo.EK.Engine
         public async Task<IPlayerAction> GetPlayerActionAsync()
         {
             await Task.Delay(500);
-            //if (Cards.Any())
-            //    return PlayerAction.PlayCard(PlayerId, Cards.First().CardId);
+            var skip = Cards.FirstOrDefault(c => c.Family == CardFamily.Skip);
+            if (skip != null && Cards.All(c => c.Family != CardFamily.ExtraLife))
+                return PlayerAction.PlayCard(PlayerId, skip.CardId);
             return PlayerAction.Draw(PlayerId);
         }
 
@@ -53,11 +58,30 @@ namespace QNgo.EK.Engine
             throw new NotImplementedException();
         }
 
-        public IPlayerState GetState()
+        public override string ToString() => $"{PlayerId} - {DisplayName}";
+
+        public void AddCard(ICard card)
         {
-            return new PlayerState(PlayerId, DisplayName, IsEliminated, Cards.Count);
+            if (_cards.Any(c => c.CardId == card.CardId))
+                throw new InvalidOperationException($"Cannot add duplicate card id {card.CardId}.");
+
+            _cards.Add(card);
+            _gameNotifier.NotifyPlayerHandChanged(PlayerId, Cards.Select(c => CardState.CreateFlipped(c.StateToken)));
         }
 
-        public override string ToString() => $"{PlayerId} - {DisplayName}";
+        public void RemoveCard(int cardId)
+        {
+            foreach (var card in _cards.Where(c => c.CardId == cardId).ToList())
+            {
+                _cards.Remove(card);
+            }
+
+            _gameNotifier.NotifyPlayerHandChanged(PlayerId, Cards.Select(c => CardState.CreateFlipped(c.StateToken)));
+        }
+
+        public IPlayerState GetState()
+        {
+            return new PlayerState(PlayerId, DisplayName, IsEliminated);
+        }
     }
 }

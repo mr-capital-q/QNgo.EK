@@ -21,11 +21,11 @@ namespace QNgo.EK.Engine
             _logger = logger;
             _players = new List<IPlayer>
             {
-                new Player(1, "John"),
-                new Player(2, "Jane"),
-                new Player(3, "Meep"),
-                new Player(4, "Milo"),
-                new Player(5, "Moop")
+                new Player(1, "John",_gameStateNotifier),
+                new Player(2, "Jane",_gameStateNotifier),
+                new Player(3, "Meep",_gameStateNotifier),
+                new Player(4, "Milo",_gameStateNotifier),
+                new Player(5, "Moop",_gameStateNotifier)
             };
 
             Deck = new FakeCardRepo().GetAllCardsAsync()
@@ -57,21 +57,21 @@ namespace QNgo.EK.Engine
         public void DiscardCard(ICard card)
         {
             DiscardPile.Add(card);
-            _gameStateNotifier.NotifyDiscardPileStateChanged(DiscardPile.Select(c => CardState.Create(c.CardId, card.Name, card.Description)));
+            _gameStateNotifier.NotifyDiscardPileStateChanged(DiscardPile.Select(c => CardState.Create(c.StateToken, c.CardId, card.Name, card.Description)));
         }
 
         public ICard DrawCard()
         {
             var card = Deck.First();
             Deck.Remove(card);
-            _gameStateNotifier.NotifyDeckStateChanged(Deck.Select(c => CardState.CreateFlipped()));
+            _gameStateNotifier.NotifyDeckStateChanged(Deck.Select(c => CardState.CreateFlipped(c.StateToken)));
             return card;
         }
 
         public void ReturnToDeck(ICard card, int position = 0)
         {
             Deck.Insert(Math.Max(0, Math.Min(Deck.Count, position)), card);
-            _gameStateNotifier.NotifyDeckStateChanged(Deck.Select(c => CardState.CreateFlipped()));
+            _gameStateNotifier.NotifyDeckStateChanged(Deck.Select(c => CardState.CreateFlipped(c.StateToken)));
         }
 
         public void GoToNextPlayer()

@@ -1,20 +1,17 @@
 ﻿<div class="@CssClass" @onclick="Click">
-    <div class="front-content">
-        @if (!_isFrontObfuscated)
-        {
+    @if (!_isFrontObfuscated)
+    {
+        <div class="front-content">
             @FrontFace
-        }
-        else
-        {
-            <p class="text-center my-2">No cheating!</p>
-        }
-    </div>
+        </div>
+    }
     <div class="back-content">
         @BackFace
     </div>
 </div>
 
 @code {
+    private bool _isFlipped;
     private bool _isFrontObfuscated;
 
     [Parameter]
@@ -24,7 +21,18 @@
     public RenderFragment BackFace { get; set; }
 
     [Parameter]
-    public bool IsFlipped { get; set; }
+    public bool IsFlipped
+    {
+        get => _isFlipped;
+        set
+        {
+            if (_isFlipped == value)
+                return;
+
+            _isFlipped = value;
+            UpdateFlipStates();
+        }
+    }
 
     [Parameter]
     public Action Click { get; set; }
@@ -47,11 +55,8 @@
         }
     }
 
-    public async void Flip()
+    private async void UpdateFlipStates()
     {
-        IsFlipped = !IsFlipped;
-        StateHasChanged();
-
         if (!IsFlipped)
         {
             _isFrontObfuscated = false;

@@ -18,7 +18,7 @@ namespace QNgo.EK.Engine.GameActions.PlayerActions
         {
             _logger?.LogInformation("Drawing a card...");
             var newCard = gameState.DrawCard();
-            gameState.Players.Single(p => p.PlayerId == playerId).Cards.Add(newCard);
+            gameState.Players.Single(p => p.PlayerId == playerId).AddCard(newCard);
 
             if (newCard.Family == CardFamily.Lose)
                 gameState.CurrentPhase = TurnPhase.Elimination;

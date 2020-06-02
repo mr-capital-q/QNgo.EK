@@ -5,7 +5,7 @@
         <div class="player-hand">
             @for (int i = 0; i < Cards.Count; i++)
             {
-                <div style="transform:rotate(@GetCardRotation(i, Cards.Count)deg)">
+                <div style="transform:rotate(@GetCardRotation(i, Cards.Count)deg);transition:transform 0.3s">
                     @CardTemplate(Cards.ElementAt(i))
                 </div>
             }

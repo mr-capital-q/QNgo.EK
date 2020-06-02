@@ -10,6 +10,7 @@ namespace QNgo.EK.Abstractions
         void NotifyDeckStateChanged(IEnumerable<ICardState> cards);
         void NotifyDiscardPileStateChanged(IEnumerable<ICardState> cards);
         void NotifyPlayersChanged(IEnumerable<IPlayerState> playerStates);
+        void NotifyPlayerHandChanged(int playerId, IEnumerable<ICardState> cards);
         void NotifyEndGameCondition(int winningPlayerId);
     }
 }

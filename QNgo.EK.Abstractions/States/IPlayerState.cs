@@ -5,6 +5,5 @@
         int PlayerId { get; }
         string DisplayName { get; }
         bool IsEliminated { get; }
-        int HandCardCount { get; }
     }
 }

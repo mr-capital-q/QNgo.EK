@@ -16,7 +16,9 @@ namespace QNgo.EK.Abstractions
 
     public interface IPlayerHand
     {
-        ICollection<ICard> Cards { get; }
+        IReadOnlyCollection<ICard> Cards { get; }
+        void AddCard(ICard card);
+        void RemoveCard(int cardId);
     }
 
     public interface IPlayerCardDisplay

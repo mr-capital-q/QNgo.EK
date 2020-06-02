@@ -31,11 +31,13 @@ namespace QNgo.EK.Engine
 
         public async Task StartGameAsync()
         {
+            _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.GetState()));
             for (var i = 0; i < 7; i++)
             {
                 foreach (var player in _gameState.Players)
                 {
-                    player.Cards.Add(_gameState.DrawCard());
+                    player.AddCard(_gameState.DrawCard());
+                    await Task.Delay(200);
                 }
             }
 
@@ -44,12 +46,10 @@ namespace QNgo.EK.Engine
             {
                 if (id != 1)
                     _gameState.ReturnToDeck(await _cardResolver.GetCardAsync(id));
-                player.Cards.Add(await _cardResolver.GetCardAsync(id + 7));
+                player.AddCard(await _cardResolver.GetCardAsync(id + 7));
                 id++;
             }
             _gameState.ShuffleDeck();
-
-            _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.GetState()));
 
             await ExecuteTurnPhaseAsync();
         }

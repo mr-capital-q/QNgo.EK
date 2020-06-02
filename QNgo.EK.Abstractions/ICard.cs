@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace QNgo.EK.Abstractions
 {
@@ -13,5 +14,6 @@ namespace QNgo.EK.Abstractions
         CardFamily Family { get; }
         string Name { get; }
         string Description { get; }
+        Guid StateToken { get; }
     }
 }

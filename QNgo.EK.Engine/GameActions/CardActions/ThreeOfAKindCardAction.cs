@@ -37,8 +37,8 @@ namespace QNgo.EK.Engine.GameActions.CardActions
                 return;
             }
 
-            targetedPlayer.Cards.Remove(card);
-            gameState.CurrentPlayer.Cards.Add(card);
+            targetedPlayer.RemoveCard(card.CardId);
+            gameState.CurrentPlayer.AddCard(card);
         }
     }
 }

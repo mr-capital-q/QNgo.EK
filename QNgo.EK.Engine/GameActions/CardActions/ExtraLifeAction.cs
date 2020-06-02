@@ -35,10 +35,13 @@ namespace QNgo.EK.Engine.GameActions.CardActions
             if (loseCard.Family != ReturnCardFamily)
                 throw new InvalidOperationException($"Action requires a cost of one card from family {ReturnCardFamily} and must be the second action cost card.");
 
-            gameState.Players.Single(p => p.PlayerId == playerId).Cards.Remove(playedCard);
+            var player = gameState.Players.Single(p => p.PlayerId == playerId);
+
+            player.RemoveCard(playedCard.CardId);
             gameState.DiscardCard(playedCard);
 
             // TODO: Let player choose where instead of randomly.
+            player.RemoveCard(loseCard.CardId);
             gameState.ReturnToDeck(loseCard, new Random().Next(gameState.Deck.Count + 1));
             return Task.CompletedTask;
         }
