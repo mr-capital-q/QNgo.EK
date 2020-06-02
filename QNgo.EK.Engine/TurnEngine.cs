@@ -32,6 +32,7 @@ namespace QNgo.EK.Engine
         public async Task StartGameAsync()
         {
             _gameStateNotifier.NotifyPlayersChanged(_gameState.Players.Select(p => p.GetState()));
+            await Task.Delay(200);
             for (var i = 0; i < 7; i++)
             {
                 foreach (var player in _gameState.Players)

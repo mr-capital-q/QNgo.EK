@@ -8,17 +8,15 @@
         @($"{(_isTurnPlayer ? "⚫" : string.Empty)}{Player?.DisplayName}{(Player?.IsEliminated == true ? " ☠" : string.Empty)}")
     </h3>
     <div style="@(Player.IsEliminated ? "opacity:0.5" : string.Empty)">
-        @{
-            <PlayerHand Cards="_cards">
-                <CardTemplate>
-                    <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
-                        <BackFace>
-                            <BackCardFace />
-                        </BackFace>
-                    </PlayingCard>
-                </CardTemplate>
-            </PlayerHand>
-        }
+        <PlayerHand Cards="_cards">
+            <CardTemplate>
+                <PlayingCard class="card-xs" IsFlipped="context.IsFlipped">
+                    <BackFace>
+                        <BackCardFace />
+                    </BackFace>
+                </PlayingCard>
+            </CardTemplate>
+        </PlayerHand>
     </div>
 </div>
 

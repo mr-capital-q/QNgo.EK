@@ -89,17 +89,17 @@ namespace QNgo.EK.Engine
                 new Card(76, CardFamily.FillerWildcard, "{FillerWildcard}", "This card can be used as any \"{Filler}\" card."),
                 new Card(77, CardFamily.FillerWildcard, "{FillerWildcard}", "This card can be used as any \"{Filler}\" card."),
                 new Card(78, CardFamily.FillerWildcard, "{FillerWildcard}", "This card can be used as any \"{Filler}\" card."),
-                new Card(79, CardFamily.Destruction, "{Destruction}", "Remove all \"{Lose}\" cards from the draw pile. Shuffle the draw pile and return the \"{Lose}\" cards to the top of the draw pile face down."),
-                new Card(80, CardFamily.HideEnd, "{HideEnd}", "While this card is in your hand, you can also secretly hold 1 \"{Lose}\" card without needing to play a \"{ExtraLife}\" card."),
-                new Card(81, CardFamily.SkipAll, "{SkipAll}", "End your turn without drawing a card. All extra turns are also skipped."),
-                new Card(82, CardFamily.Return, "{Return}", "Every player with 1 or more cards must choose one card in their hand and shuffle it into the draw pile."),
-                new Card(83, CardFamily.PeekDeckExtra, "{PeekDeckExtra}", "View the top 5 cards of the draw pile without changing its order."),
-                new Card(84, CardFamily.LockCard, "{LockCard}", "Choose another player. Pick 1 random card in their hand and reveal it until it is played or changes possession."),
-                new Card(85, CardFamily.LockCard, "{LockCard}", "Choose another player. Pick 1 random card in their hand and reveal it until it is played or changes possession."),
-                new Card(86, CardFamily.LockCard, "{LockCard}", "Choose another player. Pick 1 random card in their hand and reveal it until it is played or changes possession."),
-                new Card(87, CardFamily.SwapTopBottom, "{SwapTopBottom}", "Swap the top and bottom cards of the draw pile."),
-                new Card(88, CardFamily.AlterDeckExtra, "{AlterDeckExtra}", "View the top 5 cards of the draw pile and return them in any order."),
-                new Card(89, CardFamily.Blind, "{Blind}", "Choose another player. That player must shuffle the cards in their hand face down. Cards cannot be viewed until they draw a card but can still be played blindly.")
+                //new Card(79, CardFamily.Destruction, "{Destruction}", "Remove all \"{Lose}\" cards from the draw pile. Shuffle the draw pile and return the \"{Lose}\" cards to the top of the draw pile face down."),
+                //new Card(80, CardFamily.HideEnd, "{HideEnd}", "While this card is in your hand, you can also secretly hold 1 \"{Lose}\" card without needing to play a \"{ExtraLife}\" card."),
+                //new Card(81, CardFamily.SkipAll, "{SkipAll}", "End your turn without drawing a card. All extra turns are also skipped."),
+                //new Card(82, CardFamily.Return, "{Return}", "Every player with 1 or more cards must choose one card in their hand and shuffle it into the draw pile."),
+                //new Card(83, CardFamily.PeekDeckExtra, "{PeekDeckExtra}", "View the top 5 cards of the draw pile without changing its order."),
+                //new Card(84, CardFamily.LockCard, "{LockCard}", "Choose another player. Pick 1 random card in their hand and reveal it until it is played or changes possession."),
+                //new Card(85, CardFamily.LockCard, "{LockCard}", "Choose another player. Pick 1 random card in their hand and reveal it until it is played or changes possession."),
+                //new Card(86, CardFamily.LockCard, "{LockCard}", "Choose another player. Pick 1 random card in their hand and reveal it until it is played or changes possession."),
+                //new Card(87, CardFamily.SwapTopBottom, "{SwapTopBottom}", "Swap the top and bottom cards of the draw pile."),
+                //new Card(88, CardFamily.AlterDeckExtra, "{AlterDeckExtra}", "View the top 5 cards of the draw pile and return them in any order."),
+                //new Card(89, CardFamily.Blind, "{Blind}", "Choose another player. That player must shuffle the cards in their hand face down. Cards cannot be viewed until they draw a card but can still be played blindly.")
             });
         }
 

@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+
+@implements IDisposable
+@inject NavigationManager _navigationManager
+
+<PlayingHand Cards="_cards">
+    <CardTemplate>
+        <PlayingCard class="card-sm hover mx-1">
+            <FrontFace>
+                <FrontCardFace Model="context" />
+            </FrontFace>
+            <BackFace>
+                <BackCardFace />
+            </BackFace>
+        </PlayingCard>
+    </CardTemplate>
+</PlayingHand>
+
+@code {
+    private HubConnection _hubConnection;
+    private ICollection<CardState> _cards = new List<CardState>();
+
+    [Parameter]
+    public int PlayerId { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl(_navigationManager.ToAbsoluteUri("/gameHub"))
+            .Build();
+
+        _hubConnection.On<int, IEnumerable<CardState>>("CurrentPlayerHandChanged", (playerId, cards) =>
+        {
+            if (PlayerId != playerId)
+                return;
+
+            _cards = cards.ToList();
+            StateHasChanged();
+        });
+
+        await _hubConnection.StartAsync();
+    }
+
+    public void Dispose()
+    {
+        _ = _hubConnection.DisposeAsync();
+    }
+}

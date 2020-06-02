@@ -66,7 +66,7 @@ namespace QNgo.EK.Engine
                 throw new InvalidOperationException($"Cannot add duplicate card id {card.CardId}.");
 
             _cards.Add(card);
-            _gameNotifier.NotifyPlayerHandChanged(PlayerId, Cards.Select(c => CardState.CreateFlipped(c.StateToken)));
+            _gameNotifier.NotifyPlayerHandChanged(PlayerId, Cards);
         }
 
         public void RemoveCard(int cardId)
@@ -76,7 +76,7 @@ namespace QNgo.EK.Engine
                 _cards.Remove(card);
             }
 
-            _gameNotifier.NotifyPlayerHandChanged(PlayerId, Cards.Select(c => CardState.CreateFlipped(c.StateToken)));
+            _gameNotifier.NotifyPlayerHandChanged(PlayerId, Cards);
         }
 
         public IPlayerState GetState()

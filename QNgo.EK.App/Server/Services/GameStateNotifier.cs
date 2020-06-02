@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using QNgo.EK.Abstractions;
 using QNgo.EK.Abstractions.States;
 using QNgo.EK.App.Server.Hubs;
+using QNgo.EK.Shared;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,10 +48,11 @@ namespace QNgo.EK.App.Server.Services
             _ = _gameHub.Clients.All.SendAsync("PlayersChanged", playerStates);
         }
 
-        public void NotifyPlayerHandChanged(int playerId, IEnumerable<ICardState> cards)
+        public void NotifyPlayerHandChanged(int playerId, IEnumerable<ICard> cards)
         {
             _logger?.LogInformation($"Player {playerId} has {cards.Count()} card(s).");
-            _ = _gameHub.Clients.All.SendAsync("PlayerHandChanged", playerId, cards);
+            _ = _gameHub.Clients.All.SendAsync("PlayerHandChanged", playerId, cards.Select(c => CardState.CreateFlipped(c.StateToken)));
+            _ = _gameHub.Clients.All.SendAsync("CurrentPlayerHandChanged", playerId, cards);
         }
 
         public void NotifyEndGameCondition(int winningPlayerId)
